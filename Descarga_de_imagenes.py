@@ -1,5 +1,5 @@
 """ Implementación secuencial y paralela de un descargador de imágenes """
-
+import os
 import time
 import urllib.request
 import multiprocessing as mp
@@ -14,13 +14,19 @@ def seq_download_images(image_numbers):
 
 """ La función auxiliar devuelve el número de bytes de la imagen descargada. """
 def _download_image(image_number):
-    image_number = (abs(image_number) % 50) + 1 # force between 1 and 50
+    image_number = abs(image_number) % 50 + 1 # force between 1 and 50
     image_url = 'http://699340.youcanlearnit.net/image{:03d}.jpg'.format(image_number)
     try:
         with urllib.request.urlopen(image_url, timeout=60) as conn:
-            return len(conn.read()) # number of bytes in downloaded image
+            image_data = conn.read()
+            image_size = len(image_data)
+            save_path = r'C:\Users\Usuario\Desktop\Joker2\img1\image{:03d}.jpg'.format(image_number)
+            with open(save_path, 'wb') as file:
+                file.write(image_data)
+            return image_size # imagen descargada
+
     except urllib.error.HTTPError:
-        print('HTTPError: Could not retrieve image ', image_number)
+        print('HTTPError: Could not retrieve image {}. {}'.format(image_number, e))
     except Exception as e:
         print(e)
 
@@ -34,8 +40,8 @@ def par_download_images(image_numbers):
     return total_bytes
 
 if __name__ == '__main__':
-    NUM_EVAL_RUNS = 5
-    IMAGE_NUMBERS = list(range(1,50))
+    NUM_EVAL_RUNS = 1
+    IMAGE_NUMBERS = list(range(0,50))
 
     print('Evaluating Sequential Implementation...')
     sequential_result = seq_download_images(IMAGE_NUMBERS)
