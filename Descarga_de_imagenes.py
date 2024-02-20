@@ -18,7 +18,7 @@ def seq_download_images(image_numbers, folder):
     # Devuelve el total de bytes descargados
     return total_bytes
 
-""" La función implementa una descarga secuencial de imágenes """
+""" La función se encarga de descargar, guardar y darnos el tamaño de la imagen  """
 def _download_image(image_number, folder):
     # El número de imagen estará entre 1 y 50
     image_number = abs(image_number) % 50 + 1
@@ -49,7 +49,7 @@ def _download_image(image_number, folder):
     except Exception as e:
         print(e)
 
-""" La función devuelve el total de bytes de la descarga de todas las imágenes. """
+""" La función implementa una descarga paralela de imágenes """
 def par_download_images(image_numbers, folder):
     # Inicializa una variable para almacenar el total de bytes descargados
     total_bytes = 0
@@ -65,6 +65,7 @@ def par_download_images(image_numbers, folder):
     
     # Devuelve el total de bytes descargados
     return total_bytes
+
 
 if __name__ == '__main__':
     # Configuración para la evaluación del rendimiento
